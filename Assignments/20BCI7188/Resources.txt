@@ -1,0 +1,15 @@
+                       Assignment Submission Links and Folder Links for Artificial Intelligence
+=====================================================================================================================
+=====================================================================================================================
+
+Assignments folder link: https://drive.google.com/drive/folders/1lTrUs-ejeWmUlxctMCdr0UF1ZVoDvAoj?usp=share_link
+
+Assignment 1 Colab Link: https://colab.research.google.com/drive/1bn0f5HIR7sQ2r9T2aC9mgCE3myuyLDhJ?usp=sharing
+
+Assignment 2 Colab Link: https://colab.research.google.com/drive/1IIXZV7an6nuVbksUjic1AgE4KxAXevTw?usp=sharing
+
+Dataset Link for Assignment 2: https://drive.google.com/file/d/1__2HlRHQpqst8TtZVJFzwIeBE47HMKdc/view?usp=share_link
+
+Assignment 3 Colab Link: https://colab.research.google.com/drive/1fjQq1nIEIXt6AjqAR4F9XigiLLGvWypu?usp=share_link
+
+Dataset Link for Assignment 3: https://www.kaggle.com/datasets/akash2907/bird-species-classification
