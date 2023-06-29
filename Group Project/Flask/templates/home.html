@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang=en class=no-js>
+
+<head>
+    <link rel="icon" href="../static/asserts/icon.png">
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <title>Inflow Predictor</title>
+    <meta name=description content="Forecast Commuters Inflow Using Prophet Model">
+    <meta name=keywords content="VIT, VIT AP, SmartBridge, SmartInternz, Forecast Commuters Inflow Using Prophet Model">
+    <meta name=author content="Vishwa, Rakesh, Jahnavi, Dhanush">
+    <style type=text/css>
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -128px;
+            margin-left: -128px;
+            width: 315px;
+            line-height: 256px;
+            height: 315px;
+            font-size: 25px;
+            color: #000;
+            background-color: #fff;
+            background-image: url(https://media.tenor.com/0iK9a1WkT40AAAAM/loading-white.gif);
+            background-repeat: no-repeat;
+            background-position: center;
+            text-align: center
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            height: 100%;
+        }
+
+        td {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .left {
+            width: 50%;
+        }
+
+        .right {
+            width: 50%;
+        }
+    </style>
+
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/default.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/component.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/animations.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.min.css">
+    <script src="../static/js/modernizr.custom.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <div id=loading>0%</div>
+    <header id="navigation" class="navbar-fixed-top navbar">
+        <div class="container">
+            <div class="navbar-header" id="naving">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars fa-2x"></i>
+                </button>
+                <a class="navbar-brand" href="#" onclick="pageTransition(0,-1)">
+                    <h1 id="logo">
+                        <img src="data:image/png;base64,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"
+                            alt="logl" width="50">
+                        <span style="font-family: Comic Sans MS; font-size: 30px">Forecast Commuters Inflow for Airline
+                            Industry</span>
+                    </h1>
+                </a>
+            </div>
+            <nav class="collapse navbar-collapse" role="navigation">
+                <ul id="nav" class="nav navbar-nav" style="float: right !important; margin-right: -120px;">
+                    <li><a href="#" onclick="pageTransition(0,-1)">Home</a></li>
+                    <li><a href="#" onclick="pageTransition(3,-1)">Project Information</a></li>
+                    <li><a href="#" onclick="pageTransition(2,-1)">Team Members</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+
+    <div id=pt-main class=pt-perspective>
+        <div class="pt-page pt-page-0" style=background-color:azure>
+            <div class=contains id=firstpage>
+                <div style=background-color:#008080>
+
+                    <div class="home">
+                        <div class="slideshow-container">
+                            <img class="mySlides" src="https://i.postimg.cc/MK0NdVrQ/Screenshot-2023-06-28-154757.png"
+                                width="100%" height="500px">
+                            <img class="mySlides" src="https://i.postimg.cc/HLx0kCwY/python-and-prophet.png"
+                                width="100%" height="500px">
+                            <img class="mySlides"
+                                src="https://cdn.educba.com/academy/wp-content/uploads/2020/05/Time-Series-Analysis.jpg"
+                                width="100%" height="500px">
+                            <img class="mySlides" src="https://www.thesmartbridge.com//documents/logos/l1.png"
+                                width="100%" height="500px">
+                            <button class="arrow prev" onclick="plusSlides(-1); restartTimer()"><span
+                                    class="arrow-icon">&#10094;</span></button>
+                            <button class="arrow next" onclick="plusSlides(1); restartTimer()"><span
+                                    class="arrow-icon">&#10095;</span></button>
+
+                            <div class="dot-container">
+                                <span class="dot" onclick="currentSlide(1)"></span>
+                                <span class="dot" onclick="currentSlide(2)"></span>
+                                <span class="dot" onclick="currentSlide(3)"></span>
+                                <span class="dot" onclick="currentSlide(4)"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        var slideIndex = 1;
+                        var timer;
+
+                        document.addEventListener('DOMContentLoaded', function () {
+                            showSlides(slideIndex);
+                            startTimer();
+                        });
+
+                        function plusSlides(n) {
+                            showSlides(slideIndex += n);
+                        }
+
+                        function currentSlide(n) {
+                            showSlides(slideIndex = n);
+                        }
+
+                        function showSlides(n) {
+                            var i;
+                            var slides = document.getElementsByClassName("mySlides");
+                            var dots = document.getElementsByClassName("dot");
+
+                            if (n > slides.length) {
+                                slideIndex = 1;
+                            }
+                            if (n < 1) {
+                                slideIndex = slides.length;
+                            }
+                            for (i = 0; i < slides.length; i++) {
+                                slides[i].style.display = "none";
+                            }
+                            for (i = 0; i < dots.length; i++) {
+                                dots[i].className = dots[i].className.replace(" active-dot", "");
+                            }
+                            slides[slideIndex - 1].style.display = "block";
+                            dots[slideIndex - 1].className += " active-dot";
+                        }
+
+                        function startTimer() {
+                            timer = setInterval(function () {
+                                plusSlides(1);
+                            }, 2500);
+                        }
+
+                        function restartTimer() {
+                            clearInterval(timer);
+                            startTimer();
+                        }
+                    </script>
+
+
+                </div>
+
+                <div class="box-layout">
+                    <div class="form-container">
+                        <form id="prediction-form" action="./predict" method="POST">
+                            <div class="row" align="center">
+                                <span style="font-family:Comic Sans MS;font-size:35px">
+                                    Select Date To Forecast Commuters Inflow
+                                </span>
+                                <br><br><br><br>
+                            </div>
+                            <div align="center">
+                                <input type="date" name="Date" id="Date" required="required">
+                                <input class="btn btn-primary" id="submit_button" type="submit" value="Submit">
+                                <br><br><br>
+                                <input class="btn btn-primary" id="reset_button" type="reset" value="Test again">
+                            </div>
+                        </form>
+                        <br><br>
+                        <h2 id="prediction_text" align="center">
+                            <b>{{prediction_text}}</b>
+                        </h2>
+                    </div>
+                </div>
+
+                <script>
+                    document.getElementById("reset_button").addEventListener("click", function () {
+                        document.getElementById("prediction-form").reset();
+                        alert("Enter a new Date to check");
+                        document.getElementById("prediction_text").innerHTML = "";
+                    });
+                </script>
+            </div>
+        </div>
+
+
+        <div class="pt-page pt-page-1"
+            style=background-image:url(https://e0.pxfuel.com/wallpapers/541/770/desktop-wallpaper-white-plain-background-dirty-white-thumbnail.jpg)>
+        </div>
+
+        <div class="pt-page pt-page-2" style=background-color:azure>
+            <div class=navcolor style=background-color:red></div>
+            <div class=contains>
+                <div class=contacts style=color:#000>
+                    <h1><span color="white" ;fstyle="font-family:Comic Sans MS;font-size:35px">Contacts</span></h1>
+                    <div class="card_container">
+                        <div class="card">
+                            <div class="card__body">
+                                <span class="tag tag-blue">Team Member 1</span>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSC2U3FU0yv4Rp8HsF2YgyYmogymhwld_0tD55CDn4ijD9mSylt7RQmvocb7EDM7awCHg&usqp=CAU"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    Name : G.V.Sai Rakesh
+                                </h4>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://png.pngtree.com/png-vector/20191105/ourmid/pngtree-email-icon-in-flat-style-png-image_1957181.jpg"
+                                        height="40px" widtth=20px alt="Icon">
+                                    Gmail : <a href="mailto:rakigollamandala@gmail.com" >rakigollamandala@gmail.com</a>
+                                    
+                                </h4>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://png.pngtree.com/element_our/20190528/ourlarge/pngtree-yellow-color-phone-contact-icon-image_1148167.jpg"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    phone number : <a href="tel:7674051105">7674051105</a>
+                                </h4>
+
+                                <h4>
+                                    <img class="icon"
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsC-72aMu91hFGl0OdLVj81m5MvfsbWYHxnPd3dfAxdo7ekaptaAfrdkBW51Ut8f9enhk&usqp=CAU"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    Git Hub : <a href="https://github.com/Rakesh-03" target="_blank" class="link">Rakesh-03</a>
+                                </h4>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__body">
+                                <span class="tag tag-blue">Team Member 2</span>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSC2U3FU0yv4Rp8HsF2YgyYmogymhwld_0tD55CDn4ijD9mSylt7RQmvocb7EDM7awCHg&usqp=CAU"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    Name : M.Jahnavi
+                                </h4>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://png.pngtree.com/png-vector/20191105/ourmid/pngtree-email-icon-in-flat-style-png-image_1957181.jpg"
+                                        height="40px" widtth=20px alt="Icon">
+                                    Gmail : <a href="mailto:jahnavidk3@gmail.com" >jahnavidk3@gmail.com</a>
+                                </h4>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://png.pngtree.com/element_our/20190528/ourlarge/pngtree-yellow-color-phone-contact-icon-image_1148167.jpg"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    phone number : <a href="tel:9347137472">9347137472</a>
+                                </h4>
+
+                                <h4>
+                                    <img class="icon"
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsC-72aMu91hFGl0OdLVj81m5MvfsbWYHxnPd3dfAxdo7ekaptaAfrdkBW51Ut8f9enhk&usqp=CAU"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    Git Hub : <a href="https://github.com/MJBChandrika" target="_blank" class="link">MJBChandrika</a>
+                                </h4>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card__body">
+                                <span class="tag tag-blue">Team Member 3</span>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSC2U3FU0yv4Rp8HsF2YgyYmogymhwld_0tD55CDn4ijD9mSylt7RQmvocb7EDM7awCHg&usqp=CAU"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    Name : G Dhanush
+                                </h4>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://png.pngtree.com/png-vector/20191105/ourmid/pngtree-email-icon-in-flat-style-png-image_1957181.jpg"
+                                        height="40px" widtth=20px alt="Icon">
+                                    Gmail :<font size="4px"><a href="mailto:dhanushgarikapati26@gmail.com" >dhanushgarikapati26@gmail.com</a> </font> 
+                                </h4>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://png.pngtree.com/element_our/20190528/ourlarge/pngtree-yellow-color-phone-contact-icon-image_1148167.jpg"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    phone number : <a href="tel:8297899399">8297899399</a>
+                                </h4>
+
+                                <h4>
+                                    <img class="icon"
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsC-72aMu91hFGl0OdLVj81m5MvfsbWYHxnPd3dfAxdo7ekaptaAfrdkBW51Ut8f9enhk&usqp=CAU"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    Git Hub : <a href="https://github.com/Dhanush3620" target="_blank" class="link">Dhanush3620</a>
+                                </h4>
+                            </div>
+                        </div>
+
+
+                        <div class="card">
+                            <div class="card__body">
+                                <span class="tag tag-blue">Team Member 4</span>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSC2U3FU0yv4Rp8HsF2YgyYmogymhwld_0tD55CDn4ijD9mSylt7RQmvocb7EDM7awCHg&usqp=CAU"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    Name : G Vishwa
+                                </h4>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://png.pngtree.com/png-vector/20191105/ourmid/pngtree-email-icon-in-flat-style-png-image_1957181.jpg"
+                                        height="40px" widtth=20px alt="Icon">
+                                    Gmail : <a href="mailto:vishwa.20bci7188@vitap.ac.in" >vishwa.20bci7188@vitap.ac.in</a>
+                                </h4>
+                                <h4>
+                                    <img class="icon"
+                                        src="https://png.pngtree.com/element_our/20190528/ourlarge/pngtree-yellow-color-phone-contact-icon-image_1148167.jpg"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    phone number : <a href='tel:8328665763'>8328665763</a>
+                                </h4>
+
+                                <h4>
+                                    <img class="icon"
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsC-72aMu91hFGl0OdLVj81m5MvfsbWYHxnPd3dfAxdo7ekaptaAfrdkBW51Ut8f9enhk&usqp=CAU"
+                                        height="40px" widtth=20px alt="Icon">
+
+                                    Git Hub : <a href="https://github.com/VishwaGullapalli" target="_blank"
+                                        class="link">VishwaGullapalli</a>
+                                </h4>
+                            </div>
+                        </div>
+
+
+                        <div style="position:fixed; top: 80px; right: 40px;">
+                            <a href=# onclick=pageTransition(0,-1)>
+                                <input class="btn btn-primary" type="submit" value="Back">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="pt-page pt-page-3"
+            style=background-image:url(https://removal.ai/wp-content/uploads/2021/09/black-background-09-wallpaperaccess.png)>
+            <div class=navcolor style=background-color:yellow></div>
+            <div class=contains id="con_min">
+                <ul class=ch-grid>
+                    <li>
+                        <div class=ch-item
+                            style=background-image:url(https://www.shutterstock.com/image-illustration/time-connection-series-backdrop-composed-260nw-771695353.jpg);height:300px;width:300px>
+                            <div class=ch-info><a href=# onclick=pageTransition(4,-1)>
+                                    <h3>Prophet Model <br><br>
+                                        <hr />
+                                        About the model
+                                    </h3>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class=ch-item
+                            style=background-image:url(https://t4.ftcdn.net/jpg/04/75/03/07/360_F_475030738_kT8sJumBrd5E3cPDhzn0nWjHsGuP79u9.jpg);height:300px;width:300px>
+                            <div class=ch-info><a href=# onclick=pageTransition(5,-1)>
+                                    <h3>About the Data set<br><br>
+                                        <hr />
+                                        Kaggle
+                                    </h3>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class=ch-item
+                            style=background-image:url(https://apsche.smartinternz.com/assets/smartinternz_thumb.png);height:300px;width:300px>
+                            <div class=ch-info><a href=# onclick=pageTransition(6,-1)>
+                                    <h3>Smart Bridge<br><br>
+                                        <hr />
+                                        Let's Bridge the gap
+                                    </h3>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="pt-page pt-page-4"
+            style=background-image:url(https://e0.pxfuel.com/wallpapers/541/770/desktop-wallpaper-white-plain-background-dirty-white-thumbnail.jpg)>
+            <div class=navcolor style=background-color:#3D9140></div>
+            <div class=contains>
+
+                <h1 style="text-align: center;  font-style:italic;color: red;"><b>Prophet Model</b></h1>
+
+                <div class=event-intro style=color:#000>
+                    <p>This project report focuses on utilizing the Prophet model, a robust forecasting tool developed
+                        by Facebook's Core Data Science team, to predict commuters' inflow for the airline industry. The
+                        Prophet model has gained popularity for its ability to handle various time series data,
+                        incorporating trend, seasonality, and holiday effects.</p>
+                    <p>
+                        The Prophet model is a popular time series forecasting model developed by Facebook's Core Data
+                        Science team. It is designed to provide accurate and efficient predictions for time series data,
+                        particularly those with strong seasonal patterns. Here's some information about the Prophet
+                        model and its uses:</p>
+                    <p style="color: red;font-weight:bolder;">What is the Prophet model?</p>
+                    <p>
+                        The Prophet model is an open-source forecasting model developed by Facebook. It is based on an
+                        additive model that decomposes time series data into trend, seasonality, and holiday components.
+                        The model utilizes a Bayesian approach, allowing for the inclusion of prior knowledge and
+                        uncertainty estimation in the forecasts.
+                    </p>
+                    <p style="color: red;font-weight:bolder;">How does the Prophet model work?</p>
+                    <p>
+                        The Prophet model decomposes time series data into trend and seasonality components. It also
+                        considers the impact of holidays and other important events. It fits a piecewise linear or
+                        logistic growth curve to the trend and uses Fourier series to model seasonality. The model is
+                        flexible and can handle missing data, outliers, and changes in the trend.</p>
+                    <p style="color: red;font-weight:bolder;">What are the key features and advantages of the Prophet
+                        model?</p>
+                    <p>
+                        1. Automatic detection and handling of seasonality, including multiple seasonalities and daily,
+                        weekly, and yearly patterns.<br>
+                        2. Accommodation of custom seasonalities, such as irregular events or business-specific
+                        variations.<br>
+                        3. Robustness against missing data and outliers, as it can handle these issues effectively.<br>
+                        4. Ability to incorporate external factors, such as holidays and special events, to improve
+                        forecasting accuracy.<br>
+                        5. Transparency in model interpretation and easy implementation, even for users without
+                        extensive
+                        statistical background.</p>
+                </div>
+                <div class=event-img style="margin-bottom: 50px;margin-left:60px;"><img class="bord_col"
+                        src=https://hands-on.cloud/wp-content/uploads/2022/05/Facebook-Prophet-A-Simple-Algorithm-for-Time-Series-Data.png
+                        width=500 height=300>
+                </div>
+
+
+                <div class=event-img style="margin-left:60px;"><img class="bord_col"
+                        src=https://www.mdpi.com/electronics/electronics-11-02179/article_deploy/html/images/electronics-11-02179-g001.png
+                        width=500 height=400>
+                </div>
+
+
+                <div style="position:fixed; top: 80px; right: 40px;">
+                    <a href=# onclick=pageTransition(3,-1)>
+                        <input class="btn btn-primary" type="submit" value="Back">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="pt-page pt-page-5"
+            style=background-image:url(https://e0.pxfuel.com/wallpapers/541/770/desktop-wallpaper-white-plain-background-dirty-white-thumbnail.jpg)>
+            <div class=navcolor style=background-color:maroon></div>
+            <div class=contains>
+                <h1 style="text-align: center;  font-style:italic;color: red;">About the Data Set</h1>
+                <div class=event-intro style=color:#000>
+
+                    <p><b> Data set Link :</b> <a
+                            href="https://www.kaggle.com/code/rakannimer/air-passenger-prediction/input" target="_blank"
+                            class="red-link">Click here</a></p>
+                    <p>The dataset is structured as a tabular form with two primary dimensions: time and passenger
+                        count. The time dimension represents the sequential order of the observations, spanning from
+                        January 1949 to December 1960. The passenger count dimension signifies the recorded number of
+                        passengers corresponding to each respective time period.</p>
+                    <p>The dataset encompasses a total of 144 observations, signifying the duration of 12 years. Each
+                        observation captures the passenger count for a distinct month, resulting in a monthly temporal
+                        resolution for the data.</p>
+
+                    <p>Overall, the dataset provides valuable insights into the historical passenger trends, reflecting
+                        the dynamic nature of air travel demand and the changing preferences of travelers over the
+                        studied period. Further analysis, visualization, and modeling of the dataset can uncover
+                        additional insights and facilitate more accurate forecasts and predictions for future passenger
+                        counts.</p>
+                    <br>
+
+                    <h1>
+                        <p><b><u>Statistics of the Data Set</u></b></p>
+                    </h1>
+                </div>
+
+                <div class=event-img><img style="margin: 50px;" class="bord_col"
+                        src=https://styles.redditmedia.com/t5_2r97t/styles/communityIcon_ri05w19k4zh01.png alt="">
+                </div>
+
+                <div class="img_data">
+
+                    <img class="bord_col" style="margin-top: 80px;" src="..\static\asserts\data_set_1.png" alt=""
+                        width="800px" ,height="800px">
+
+                    <br>
+                    <br>
+                </div>
+                <h1>
+                    <p><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u>Dimensions of the Data
+                                Set</u></b></p>
+                </h1>
+                <br>
+                <br>
+                <div class="img_data">
+
+                    <img class="bord_col" src="../static/asserts/data_set_2.png" alt="" width="400px" ,height="400px">
+                </div>
+
+                <div style="position:fixed; top: 80px; right: 40px;">
+                    <a href=# onclick=pageTransition(3,-1)>
+                        <input class="btn btn-primary" type="submit" value="Back">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-page pt-page-6"
+            style=background-image:url(https://e0.pxfuel.com/wallpapers/541/770/desktop-wallpaper-white-plain-background-dirty-white-thumbnail.jpg)>
+            <div class=navcolor style=background-color:violet></div>
+            <div class=contains>
+
+                <h1 style=text-align:center>Smart Bridge</h1>
+                <div class=event-intro style=color:#000>
+                    <h3>Smart Bridge Link : <a class="red-link" target="_blank" href="https://www.thesmartbridge.com/">Smart Bridge</a>
+                    </h3>
+                    <br>
+                    <br>
+
+                    <p>SMARTBRIDGE is an edTech organization with a vision to bridge the gap between academia &
+                        industry. Our outcome-based experiential learning programs on emerging technologies (Internet of
+                        Things, Machine Learning, Data Science, Artificial Intelligence, Robotics) are building skilled
+                        entry - level engineers, for the corporate world. SmartBridge is in mission to build technology
+                        communities in academia to encourage students towards innovation & entrepreneurship. Since
+                        inception, we have trained thousands of students, faculty and working professionals on emerging
+                        technologies via technical bootcamps, hackathons, Summer & Winter Internship Programs.</p>
+                    <p>Our main objective is to bridge the existing gaps between prevailing industry standards and what
+                        the academics offer to the graduates while passing out of university. SmartBridge offers
+                        suitable skill deployment and training to the young talent before on boarding their first job.
+                    </p>
+
+                    <p>Our skill development programs are designed considering the present expectations in the industry.
+                        We thereby work along the lines to offer best programs in IoT Hyderabad.</p>
+                    <br>
+                    <p><strong>Main objectives of SmartBridge</strong></p>
+
+                    <ul>
+                        <li>Well directed career guidance programs for educational institutions</li>
+                        <li>Appropriate certification courses that suit the industry need</li>
+                        <li>Train the trainers; expanded awareness about the current industry standards</li>
+                        <li>Liaise with corporates to offer niche internships</li>
+                        <li>Establish technology development centers in colleges</li>
+                        <li>Specialised incubation centers in collaboration with corporates</li>
+                    </ul>
+                </div>
+                <div class=event-img><img style="margin: 50px;margin-top:150px;" class="bord_col"
+                        src=https://smartinternz.com/assets/smartbridge.png width=500 height=400>
+                </div>
+                <div style="position:fixed; top: 80px; right: 40px;">
+                    <a href=# onclick=pageTransition(3,-1)>
+                        <input class="btn btn-primary" type="submit" value="Back">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class=pt-message>
+            <p>Your browser does not support CSS animations.</p>
+        </div>
+        <script src=../static/js/main.js></script>
+    </div>
+    </div>
+</body>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang=en class=no-js>
+
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <title>Prophet Model</title>
+    <meta name=description content="College 2015 Web Page ">
+    <meta name=keywords content="College, CS FEST, VASAVI, CSE">
+    <meta name=author content=little_bit_all>
+    <style type=text/css>
+    #loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -128px;
+        margin-left: -128px;
+        width: 256px;
+        line-height: 256px;
+        height: 256px;
+        font-size: 25px;
+        color: #000;
+        background-color: #fff;
+        background-image: url(https://media.tenor.com/0iK9a1WkT40AAAAM/loading-white.gif);
+        background-repeat: no-repeat;
+        background-position: center;
+        text-align: center
+    }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Style for the table and its cells */
+    table {
+        width: 100%;
+        height: 100%;
+    }
+    
+    td {
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .left {
+        width: 50%;
+    }
+    
+    .right {
+        width: 50%;
+    }    
+
+
+    </style>
+
+    <link rel=stylesheet href=css/bootstrap.min.css>
+    <link rel=stylesheet href=css/style.css>
+    <link rel=stylesheet type=text/css href=css/default.css>
+    <link rel=stylesheet type=text/css href=css/component.css>
+    <link rel=stylesheet type=text/css href=css/animations.css>
+    <link rel=stylesheet type=text/css href=css/font-awesome.min.css>
+    <script src=js/modernizr.custom.js type=text/javascript></script>
+
+    <body>
+        <div id=loading>0%</div>
+        <header id=navigation class="navbar-fixed-top navbar">
+            <div class=container>
+                <div class=navbar-header id=naving>
+                    <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-collapse><span class=sr-only>Toggle navigation</span> <i class="fa fa-bars fa-2x"></i>
+                    </button> <a class=navbar-brand href=# onclick=pageTransition(0,-1)><h1 id=logo><img src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFPtpqfARxaFQTj4edHu01jB_E9AjD3fDl_h5XrtkGFQ&s alt=logl width=40><span style="font-family:Comic Sans MS;font-size:35px"> Project Work</span></h1></a>
+                </div>
+                <nav class="collapse navbar-collapse navbar-right" role=navigation>
+                    <ul id=nav class="nav navbar-nav">
+                         </li>
+                        <li><a href=# onclick=pageTransition(3,-1)>Project Information</a>
+                        </li>
+                        <li><a href=# onclick=pageTransition(2,36)>Team Members</a>
+                       
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        
+        <div id=pt-main class=pt-perspective>
+            <div class="pt-page pt-page-0" style=background-image:url(https://img.freepik.com/free-vector/white-rhombus-pattern_1053-249.jpg);padding-bottom:0;overflow-x:none>
+                <div class=contains id=firstpage>
+                        <div>
+                            <div id="slide">
+                                <img class="mySlides" src="https://www.codepython.in/wp-content/uploads/2023/03/Forecasting-with-Time-series-analysis-and-Python.webp" width=100% height=550px>
+                                <img class="mySlides" src="https://cdn.educba.com/academy/wp-content/uploads/2020/05/Time-Series-Analysis.jpg" width=100% height=550px>
+                              </div>
+
+                              <script>
+                                var myIndex = 0;
+                                carousel();
+                                
+                                function carousel() {
+                                  var i;
+                                  var x = document.getElementsByClassName("mySlides");
+                                  for (i = 0; i < x.length; i++) {
+                                    x[i].style.display = "none";  
+                                  }
+                                  myIndex++;
+                                  if (myIndex > x.length) {myIndex = 1}    
+                                  x[myIndex-1].style.display = "block";  
+                                  setTimeout(carousel, 4000); 
+                                }
+                                </script>
+                                
+                        </div>
+                    <div id=about class=pad-section>
+                        <div class=container>
+                            <div class=row>
+                                <div class=col-sm-6>
+                                    <div class="container">
+                                        <form action="./predict" method="POST">
+                                            <div class="row" align="left" >
+                                                <span style="font-family:Comic Sans MS;font-size:35px"> Select date to Forecaste Commuters inflow</span>
+                                            </div>
+                                            <div>
+                                                <input type="date" name="Date" id="Date" required="required">
+                                            </div>
+                                            <br>
+                                        <br>
+                                            <div>
+                                                <input class="btn btn-primary" type="submit" value="Submit">
+                                            </div>
+                                        </form>
+                                        <h3><center>prediction<center></h3>
+                                
+                                        <br>
+                                        <br>
+                                
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-page pt-page-1" style=background-image:url(https://img.freepik.com/free-vector/white-rhombus-pattern_1053-249.jpg)></div>
+            <div class="pt-page pt-page-2" style=background-image:url(https://img.freepik.com/free-vector/white-rhombus-pattern_1053-249.jpg)>
+                <div class=navcolor style=background-color:#FA6900></div>
+                <div class=contains>
+                    <div class=contacts style=color:#000>
+                        <h1>Contacts</h1>
+                        <div id=table-list>
+                            <table>
+                                <tr>
+                                    <td class="left"> <!-- Left top member -->
+                                        <h4><b>Member 1</b></h4>
+                                        <br>
+                                        <h4><b>demo</b></h4>
+                                        <br>
+                                        <h4><b>demo</b></h4>
+                                    </td>
+                                    <td class="right"> <!-- Right top member -->
+                                        <h4><b>Member 2</b></h4>
+                                        <br>
+                                        <h4><b>demo</b></h4>
+                                        <br>
+                                        <h4><b>demo</b></h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="left"> <!-- Left bottom member -->
+                                        <h4><b>Member 3</b></h4>
+                                        <br>
+                                        <h4><b>demo</b></h4>
+                                        <br>
+                                        <h4><b>demo</b></h4>
+                                    </td>
+                                    <td class="right"> <!-- Right bottom member -->
+                                        <h4><b>Member 4</b></h4>
+                                        <br>
+                                        <h4><b>demo</b></h4>
+                                        <br>
+                                        <h4><b>demo</b></h4>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="pt-page pt-page-3" style=background-image:url(https://removal.ai/wp-content/uploads/2021/09/black-background-09-wallpaperaccess.png)>
+                <div class=navcolor style=background-color:#292421></div>
+                <div class=contains>
+                    <ul class=ch-grid>
+                        <li>
+                            <div class=ch-item style=background-image:url(https://www.shutterstock.com/image-illustration/time-connection-series-backdrop-composed-260nw-771695353.jpg);height:300px;width:300px>
+                                <div class=ch-info><a href=# onclick=pageTransition(4,-1)><h3>Time Series Analysis</h3></a>
+                                    <p><h3>About the model</h3></p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class=ch-item style=background-image:url(https://t4.ftcdn.net/jpg/04/75/03/07/360_F_475030738_kT8sJumBrd5E3cPDhzn0nWjHsGuP79u9.jpg);height:300px;width:300px>
+                                <div class=ch-info><a href=# onclick=pageTransition(5,-1)><h3>DATA SET</h3></a>
+                                    <p><h3>Kaggle</h3></p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="pt-page pt-page-6" style=background-image:url(https://img.freepik.com/free-vector/white-rhombus-pattern_1053-249.jpg)>
+                <div class=navcolor style=background-color:#3D9140></div>
+                <div class=contains>
+                    <h1 style=text-align:center>Time Series Analysis</h1>
+                    <div class=event-intro style=color:#000>
+                        <p>Matter</p>
+                    </div>
+                    <div class=event-img><img src=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSboPwCo0r2WqfHT9A7YTUlDLEdRfl23V9k1YoVmt8KHg&s width=300 height=184>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="pt-page pt-page-8" style=background-image:url(https://img.freepik.com/free-vector/white-rhombus-pattern_1053-249.jpg)>
+                <div class=navcolor style=background-color:maroon></div>
+                <div class=contains>
+                    <h1 style=text-align:center>Data Set</h1>
+                    <div class=event-intro style=color:#000>
+                        <p> matter</p>   
+                        <p><a href="http://www.codechef.com/ACMN2015/" target=_blank>DataSet</a></p>
+                    </div>
+                    <div class=event-img><img src=https://styles.redditmedia.com/t5_2r97t/styles/communityIcon_ri05w19k4zh01.png alt="" >
+                    </div>
+                </div>
+            </div>
+
+
+        <div class=pt-message>
+            <p>Your browser does not support CSS animations.</p>
+        </div>
+        <script src=js/main.js></script>
